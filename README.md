@@ -1,5 +1,7 @@
 ![Vector Icons for React Native](https://cloud.githubusercontent.com/assets/378279/12009887/33f4ae1c-ac8d-11e5-8666-7a87458753ee.png)
 
+[![Travis](https://img.shields.io/travis/oblador/react-native-vector-icons.svg)](https://travis-ci.org/oblador/react-native-vector-icons) [![npm](https://img.shields.io/npm/v/react-native-vector-icons.svg)](https://npmjs.com/package/react-native-vector-icons) [![npm](https://img.shields.io/npm/dm/react-native-vector-icons.svg)](https://npmjs.com/package/react-native-vector-icons) [![Issue Stats](https://img.shields.io/issuestats/i/github/oblador/react-native-vector-icons.svg)](http://github.com/oblador/react-native-vector-icons/issues)
+
 Perfect for buttons, logos and nav/tab bars. Easy to extend, style and integrate into your project. 
 
 ## Bundled Icon Sets
@@ -12,7 +14,7 @@ Perfect for buttons, logos and nav/tab bars. Easy to extend, style and integrate
 * [`Foundation`](http://zurb.com/playground/foundation-icon-fonts-3) by ZURB, Inc. (v3.0, **283** icons)
 * [`Ionicons`](http://ionicframework.com/docs/v2/ionicons/) by Ben Sperry (v3.0.0, **859** icons)
 * [`MaterialIcons`](https://www.google.com/design/icons/) by Google, Inc. (v3.0.1, **932** icons)
-* [`MaterialCommunityIcons`](https://materialdesignicons.com/) by MaterialDesignIcons.com (v1.9.33, **1932** icons)
+* [`MaterialCommunityIcons`](https://materialdesignicons.com/) by MaterialDesignIcons.com (v2.0.46, **2046** icons)
 * [`Octicons`](http://octicons.github.com) by Github, Inc. (v5.0.1, **176** icons)
 * [`Zocial`](http://zocial.smcllns.com/) by Sam Collins (v1.0, **100** icons)
 * [`SimpleLineIcons`](http://simplelineicons.com/) by Sabbir & Contributors (v2.4.1, **189** icons)
@@ -159,35 +161,39 @@ These steps are optional and only needed if you want to use the `Icon.getImageSo
 
 ### Web (with [webpack](https://webpack.js.org/))
 
-First, you will need to add ``node_modules/react-native-vector-icons`` in your ``babel-loader`` ``include`` definition.
-
-Then, in your webpack configuration file, add a section to handle ttf files using url-loader (or file-loader)
+In your webpack configuration file, add a section to handle ttf files using url-loader (or file-loader)
 
 ```js
-        {
-          test: /\.ttf$/,
-          loader: "url-loader", // or directly file-loader
-          include: path.resolve(__dirname, "node_modules/react-native-vector-icons"),
-        },
+{
+  test: /\.ttf$/,
+  loader: "url-loader", // or directly file-loader
+  include: path.resolve(__dirname, "node_modules/react-native-vector-icons"),
+},
 ```
 
 Then consume those files in your JavaScript entry point to get the bundled url and inject a style tag in your page:
 
 ```js
-// generate required css
-import fontAwesome from "react-native-vector-icons/Fonts/FontAwesome.ttf"
-const reactNativeVectorIconsRequiredStyles = "@font-face { src:url("+fontAwesome+");font-family: FontAwesome; }"
+// Use prebuilt version of RNVI in dist folder
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
-// create stylesheet
+// Generate required css
+import iconFont from 'react-native-vector-icons/Fonts/FontAwesome.ttf';
+const iconFontStyles = `@font-face {
+  src: url(${iconFont});
+  font-family: FontAwesome;
+}`;
+
+// Create stylesheet
 const style = document.createElement('style');
 style.type = 'text/css';
-if (style.styleSheet){
-  style.styleSheet.cssText = reactNativeVectorIconsRequiredStyles;
+if (style.styleSheet) {
+  style.styleSheet.cssText = iconFontStyles;
 } else {
-  style.appendChild(document.createTextNode(reactNativeVectorIconsRequiredStyles));
+  style.appendChild(document.createTextNode(iconFontStyles));
 }
 
-// inject stylesheet
+// Inject stylesheet
 document.head.appendChild(style);
 ```
 
@@ -429,7 +435,6 @@ function ExampleView(props) {
 ### Community examples
 
 * [react-native-dribbble-app](https://github.com/catalinmiron/react-native-dribbble-app)
-* [voximplant react-native-demo](https://github.com/voximplant/react-native-demo)
 * [product-kitty](https://github.com/rkho/product-kitty) ([blog post](http://richardkho.com/persisting-tabbars-in-react-native/))
 * [react-native-netflix](https://github.com/mariodev12/react-native-netflix)
 
@@ -470,7 +475,7 @@ Save output to file, defaults to STDOUT
 #### Red screen with "Unrecognized font family" error on iOS
 * Make sure you've added manually the reference of your `.ttf` on your xcodeproj `Resources` folder.
 * Check that the font you are trying to use appears in `Info.plist`, if you've added the whole folder and it's blue in color, then you need to add it to the path. 
-* Check that the font is copied in the *Copy Bundle Resources in Build Phases*.
+* Check that the font is copied in the *Copy Bundle Resources* in *Build Phases*.
 * Recompile the project.
 
 #### Android build fails on Windows for no good reason
